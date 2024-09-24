@@ -30,13 +30,19 @@ def bin2hex (sBinInput):
     a="_"+sBinInput[::-1]
     ref = len(sBinInput)//4
     med = ""
-    for i in range(ref):
-        group = a[1+(4*i):5+(4*i)]
-        new = "0123456789ABCDEF"[bin2dec(group[::-1])%16]
-        med = med+new
-    group = a[1+(4*ref):]
-    med = med + "0123456789ABCDEF"[bin2dec(group[::-1])%16]
-    med = med[::-1]
+    if int(len(sBinInput)%4) != 0:
+        for i in range(ref):
+            group = a[1+(4*i):5+(4*i)]
+            new = "0123456789ABCDEF"[bin2dec(group[::-1])%16]
+            med = med+new
+        group = a[1+(4*ref):]
+        med = med + "0123456789ABCDEF"[bin2dec(group[::-1])%16]
+        med = med[::-1]
+    else:
+        for i in range(ref):
+            group = a[1+(4*i):5+(4*i)]
+            new = "0123456789ABCDEF"[bin2dec(group[::-1])%16]
+            med = med+new
     return med
 def processBin(sInputNum): #input input w/o prefix
     if isValidBinInput(sInputNum):
@@ -46,7 +52,7 @@ def processBin(sInputNum): #input input w/o prefix
         result = (decNumber, binNumber, hexNumber)
         return result
     else:
-        result = ("None", "Invalid Input", "None")
+        result = (None, "Invalid Input", None)
         return result
 def dec2bin(sDecInput):
     a=int(sDecInput)
@@ -61,14 +67,14 @@ def dec2bin(sDecInput):
 def dec2hex (sDecInput):
     return bin2hex(dec2bin(sDecInput))
 def processDec (sInputNum):
-    if isValidDecInput(sInputNum) and int(sInputNum) <= (2**32-1):
+    if (isValidDecInput(sInputNum) and len(num)>0 )and int(sInputNum) <= (2**32-1):
         decNumber = str(sInputNum)
         binNumber = f'0b{dec2bin(sInputNum)}'
         hexNumber = f'0x{dec2hex(sInputNum)}'
         result = (decNumber, binNumber, hexNumber)
         return result
     else:
-        result = ("Invalid Input", "None", "None")
+        result = ("Invalid Input", None, None)
         return result
 def hex2bin(sHexInput):
     return(dec2bin(hex2dec(sHexInput)))
@@ -76,7 +82,7 @@ def hex2dec(sHexInput):
     dec,count = 0,0
     for i in sHexInput:
         count += 1
-        dec+=int(("1234567890ABCDEF".find(i.upper()))*(16**(len(sHexInput)-(count+1))))
+        dec+=int(("1234567890ABCDEF".find(i.upper()))*(16**(len(sHexInput)-(count))))
     return dec
 def processHex (sInputNum):
     if isValidHexInput(sInputNum):
@@ -86,27 +92,26 @@ def processHex (sInputNum):
         result = (decNumber, binNumber, hexNumber)
         return result 
     else:
-        result = ("None", "None", "Invalid Input")
+        result = (None, None, "Invalid Input")
         return result 
 def printResult (dbhTuple):
     return print(f'dec : {dbhTuple[0]} \nbin : {dbhTuple[1]} \nhex : {dbhTuple[2]} \n')
-
-stopper = "0"    
-while stopper.lower() != "q":
-    print("DECIMAL : D..D, where D is 0-9   ".center(50," "))
-    print("BINARY : 0bB..B, where 5 is 0-1".center(50," "))
-    print("HEXADECIMAL : 0xS..S, where 5 is 0-9, A-F".center(50," "))
-    print()
-    num = input("Enter a number using the notation above: ")
-    withoutadditional = num[2:]
-    withoutadditional = withoutadditional.replace("_","")
+def startProcess (sInputNum):
+    processed = sInputNum[2:]
+    processed = processed.replace("_","")
+    processed = processed.lstrip("0")
     print()
     print(f"num : {num}")
-    if num[0:2] == "0b" and len(withoutadditional) <= 32:
-        result=processBin(withoutadditional)
-    elif num[0:2] == "0x" and len(withoutadditional) <= 8:
-        result=processHex(withoutadditional)
+    if num.startswith('0b') and (len(processed) > 0 and len(processed) <= 32):
+        result=processBin(processed)
+    elif num.startswith('0x') and (len(processed) > 0 and len(processed) <= 8):
+        result=processHex(processed)
     else: 
-        result=processDec(num)
-    printResult(result)
+        result=processDec(num) 
+    return result
+stopper = "0"    
+while stopper.lower() != "q":
+    print(f"{"DECIMAL : D..D, where D is 0-9   ".center(50," ")} \n{"BINARY : 0bB..B, where 5 is 0-1".center(50," ")} \n{"HEXADECIMAL : 0xS..S, where 5 is 0-9, A-F".center(50," ")} \n")
+    num = input("Enter a number using the notation above: ")
+    printResult(startProcess(num))
     stopper = input("Enter any key to continue or Q/q to stop: ")
