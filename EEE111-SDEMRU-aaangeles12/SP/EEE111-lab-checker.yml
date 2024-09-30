@@ -1,0 +1,189 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+
+name: EEE111 Exercises Flow
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    # Set job outputs to values from filter step
+    outputs:
+      week0: ${{ steps.filter.outputs.week0 }}
+      week1: ${{ steps.filter.outputs.week1 }}
+      week2: ${{ steps.filter.outputs.week2 }}
+      week3: ${{ steps.filter.outputs.week3 }}
+      week4: ${{ steps.filter.outputs.week4 }}
+      week5: ${{ steps.filter.outputs.week5 }}
+      swproj1: ${{ steps.filter.outputs.swproj1 }}
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.10"
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install ruff
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - name: Lint with Ruff
+      run: |
+        pip install ruff
+        ruff check --output-format=github .
+    - uses: dorny/paths-filter@v3
+      id: filter
+      with:
+        filters: |
+          week0:
+            - 'week0/**'
+          week1:
+            - 'week1/**'
+          week2:
+            - 'week2/**'
+          week3:
+            - 'week3/**'
+          week4:
+            - 'week4/**'
+          week5:
+            - 'week5/**'
+          swproj1:
+            - 'swproj1/**'         
+  # JOB to build and test week0 code
+  week0:
+    needs: changes
+    # if: ${{ needs.changes.outputs.week0 == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: week0 tests
+        run: |
+          pytest week0/*
+  # JOB to build and test week1 code
+  week1:
+    needs: changes
+    # if: ${{ needs.changes.outputs.week1 == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: week1 tests
+        run: |
+          pytest week1/*
+  # JOB to build and test week2 code
+  week2:
+    needs: changes
+    # if: ${{ needs.changes.outputs.week2 == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: week2 tests
+        run: |
+          pytest week2/week2-test.py
+  # JOB to build and test week3 code
+  week3:
+    needs: changes
+    # if: ${{ needs.changes.outputs.week3 == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: week3 tests
+        run: |
+          echo '11101' | pytest -s week3/bin2dec-test.py
+  week4:
+    needs: changes
+    # if: ${{ needs.changes.outputs.week4 == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: week4 tests
+        run: |
+          python week4/dec-bin-hex.py < week4/dec-bin-hex-test-data.txt
+  week5:
+    needs: changes
+    # if: ${{ needs.changes.outputs.week5 == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: week5 tests
+        run: |
+          python week5/poker-hands-ui.py < week5/poker-hands-test-data.txt
+  swproj1:
+    needs: changes
+    # if: ${{ needs.changes.outputs.swproj1 == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: swproj1 tests
+        run: |
+          python swproj1/poker-hands.py < swproj1/poker-hands-test-data.txt
