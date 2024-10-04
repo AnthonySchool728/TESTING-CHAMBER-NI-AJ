@@ -33,7 +33,8 @@ def displayCards(cardList):
     print(f'\nYour cards are the following : {cardList}')
     for card in cardList:
         temp_= card if len(card) == 3 else f' {card}'
-        print(f'{temp_} : {cards[card][0]} of {cards[card][1]}')
+        print(f'{temp_} : {cards[card][0]} of {cards[card][1]}',)
+    print("")
 
 def printDivider(divLength):
     print(f'{"*"*divLength}')
@@ -52,54 +53,82 @@ def printMenu():
 
 def removextra(cardList, sett = 1):
     if sett == 1:
-        return [int(a[1:]) for a in cardList]
+        num = [int(a[1:]) for a in cardList]
+        num.sort()
+        return num
     return [a[0] for a in cardList]
-def flushCheck (cardList):
+def isFlush (cardList):
     return (len(set(removextra(cardList,0))) == 1)
 
-def straightCheck (cardList):
+def isStraight (cardList):
     num,royalStraight = removextra(cardList), [1,10,11,12,13]
     if num == royalStraight or num == [a for a in range(min(num),min(num)+5)]:
         return True
     return False
 
-def royalCheck(cardList):
-    num,broadway = removextra(cardList), [1,10,11,12,13]
-    if flushCheck(cardList) and num == broadway:
+def isRoyalFlush (cardList):
+    num,broadway = (removextra(cardList)), [1,10,11,12,13]
+    if isFlush(cardList) and num == broadway:
         return True
     return False
 
-def fourKind (cardList):
+def isStraightFlush (cardList):
+    if isFlush(cardList) and isStraight(cardList) and not(isRoyalFlush):
+        return True
+    return False
+
+def isFourOfaKind (cardList):
     a = removextra(cardList)
     if len(set(a[:4])) == 1 or len(set(a[1:])) == 1:
         return True
     return False
 
-def ToK (cardList):
+def isThreeOfaKind (cardList):
     if all(removextra(cardList).count(b) != 2 for b in removextra(cardList)):
         if any(removextra(cardList).count(a) == 3 for a in removextra(cardList)):
             return True
     return False
 
-def TwoPair(cardList):
+def isFullHouse(cardList):
     if any(removextra(cardList).count(b) == 2 for b in removextra(cardList)):
         if any(removextra(cardList).count(a) == 3 for a in removextra(cardList)):
             return True
     return False
 
+def isTwoPair(cardList):
+    Count = [removextra(cardList).count(b) for b in removextra(cardList)]
+    if Count.count(2) == 4:
+        return True
+    return False
 
-# def straightCheck (cardList): #Checks Straight and Straight Flush
-# def multiValueCheck (cardList): #Will check for FH,FoK, ThP,TwP,HiC
+def isPair (fiveCards):
+    Count = [removextra(fiveCards).count(b) for b in removextra(fiveCards)]
+    if Count.count(2) == 2:
+        return True
+    return False
+
+def isHighCard (fiveCards):
+    Count = [removextra(fiveCards).count(b) for b in removextra(fiveCards)]
+    if not(isFlush(fiveCards)) and Count.count(1) == 5:
+        return True
+    return False
 
 def checkall (a):
-    print("",a,removextra(a))
-    print(flushCheck(a))
-    print(straightCheck(a))
-    print(royalCheck(a))
-    print(fourKind(a))
-    print(ToK(a))
-    print(TwoPair(a))
+    # print(f'Royal Flush: {isRoyalFlush(a)}')
+    # print(f'Flush: {isFlush(a)}') 
+    # print(f'Straight: {isStraight(a)}')
+    # print(f'StraightFlush: {isStraightFlush(a)}')
+    # print(f'Four of A Kind: {isFourOfaKind(a)}')
+    # print(f'Three of a A Kind: {isThreeOfaKind(a)}')
+    # print(f'Two Pair: {isTwoPair(a)}')
+    # print(f'Pair: {isPair(a)}')
+    # print(f'HighCard: {isHighCard(a)}')
+    if isRoyalFlush(a):
+        return (f'You have a Royal Flush')
+    elif isStraightFlush(a):
+        return (f'You have a Straight Flush')
 
+    
 # Global
 colors = {'H': 'Hearts', 'D' : 'Diamonds', 'C' : 'Clubs', 'S' : 'Spades'}
 ranks = ['Ace', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King']
