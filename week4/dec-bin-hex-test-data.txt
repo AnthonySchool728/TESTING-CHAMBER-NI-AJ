@@ -1,0 +1,8 @@
+0xFFFF_FFFF
+C
+0x0000_0000
+C
+0x5555_5555
+C
+0xaAaA_aaaa
+Q
