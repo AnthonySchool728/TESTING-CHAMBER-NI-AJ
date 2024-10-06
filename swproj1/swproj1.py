@@ -90,27 +90,27 @@ def isHighCard (fiveCards):
     return not(isFlush(fiveCards)) and Count.count(1) == 5
 def checkall (a):
     if isRoyalFlush(a):
-        return (f'You have a Royal Flush')
+        return ('You have a Royal Flush')
     elif isStraightFlush(a):
-        return (f'You have a Straight Flush')
+        return ('You have a Straight Flush')
     elif isFourOfaKind(a):
-        return (f'You have Four of A Kind')
+        return ('You have Four of A Kind')
     elif isFullHouse(a):
-        return (f'You have a Full House')
+        return ('You have a Full House')
     elif isFlush(a):
-        return (f'You have a Flush')
+        return ('You have a Flush')
     elif isStraight(a):
-        return (f'You have a Straight')
+        return ('You have a Straight')
     elif isThreeOfaKind(a):
-        return (f'You have Three of A Kind')
+        return ('You have Three of A Kind')
     elif isTwoPair(a):
-        return (f'You have Two Pairs')
+        return ('You have Two Pairs')
     elif isPair(a):
-        return (f'You have a Pair')
+        return ('You have a Pair')
     elif isHighCard(a):
-        return (f'You have a High Card')
+        return ('You have a High Card')
     else:
-        return (f'You have no hand')
+        return ('You have no hand')
 
 # Global
 colors = {'H': 'Hearts', 'D' : 'Diamonds', 'C' : 'Clubs', 'S' : 'Spades'}
