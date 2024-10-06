@@ -2,7 +2,7 @@ a = input("enter a binary number : ") #takes an input from user for binary numbe
 b=a.replace("_","") #removes "_"
 
 def isValidInput (smthn):
-    if len(b)>5 or (b.count("1")+b.count("0")!=len(b)): #detects if greater than 5 bits OR has non binary digit
+    if (b.count("1")+b.count("0")!=len(b)): #detects if greater than 5 bits OR has non binary digit
         return False
     else:
         return True
