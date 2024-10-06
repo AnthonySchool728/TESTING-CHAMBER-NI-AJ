@@ -87,7 +87,7 @@ def isPair (fiveCards):
     return Count.count(2) == 2
 def isHighCard (fiveCards):
     Count = [removextra(fiveCards).count(b) for b in removextra(fiveCards)]
-    return not(isFlush(fiveCards)) and Count.count(1) == 5:
+    return not(isFlush(fiveCards)) and Count.count(1) == 5
 def checkall (a):
     if isRoyalFlush(a):
         return (f'You have a Royal Flush')
