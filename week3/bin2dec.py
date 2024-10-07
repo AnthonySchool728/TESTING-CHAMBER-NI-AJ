@@ -2,12 +2,14 @@ a = input("enter a binary number : ") #takes an input from user for binary numbe
 b=a.replace("_","") #removes "_"
 
 def isValidInput (smthn):
+    b=smthn.replace("_","")
     if (b.count("1")+b.count("0")!=len(b)): #detects if greater than 5 bits OR has non binary digit
         return False
     else:
         return True
 
 def bin2dec (bin):
+    b=bin.replace("_","")
     counter=len(b)-1 #serves as both counter and multiplier for conversion
     binary = 0 # will be the final result
     for char in b:

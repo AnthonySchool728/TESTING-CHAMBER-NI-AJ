@@ -27,3 +27,5 @@ def test_isValidInput_Invalid():
         testNum = random.randrange(33, 50)
         print(f'isValidInput({bin(testNum)[2:]})')
         assert(not isValidInput(bin(testNum)[2:]))
+        
+test_bin2dec()
